@@ -1,6 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import cardsReducer from "./cardSlice";
+import articlesReducer from "./articlesSlice";
 
-const store = configureStore({ reducer: { cards: cardsReducer } });
+const store = configureStore({
+  reducer: { articles: articlesReducer, newArticles: articlesReducer },
+});
 
 export default store;

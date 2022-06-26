@@ -10,14 +10,21 @@ export const fetchArticles = createAsyncThunk(
   }
 );
 
-const cardSlice = createSlice({
-  name: "cards",
+const articlesSlice = createSlice({
+  name: "articles",
   initialState: {
-    cards: [],
+    articles: [],
+    newArticles: [],
     status: null,
     error: null,
   },
-  reducer: {},
+  reducers: {
+    filterByAuthors(state, action) {
+      state.newArticles = state.articles.filter(
+        (article) => article.author !== action.payload.selectedAuthor
+      );
+    },
+  },
   extraReducers: {
     [fetchArticles.pending]: (state) => {
       state.status = "loading";
@@ -25,7 +32,7 @@ const cardSlice = createSlice({
     },
     [fetchArticles.fulfilled]: (state, action) => {
       state.status = "resolved";
-      state.cards = action.payload.articles;
+      state.articles = action.payload.articles;
     },
     [fetchArticles.rejected]: (state) => {
       state.status = "error";
@@ -33,4 +40,5 @@ const cardSlice = createSlice({
   },
 });
 
-export default cardSlice.reducer;
+export const { filterByAuthors } = articlesSlice.actions;
+export default articlesSlice.reducer;
