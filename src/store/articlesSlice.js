@@ -14,14 +14,23 @@ const articlesSlice = createSlice({
   name: "articles",
   initialState: {
     articles: [],
-    newArticles: [],
+    articlesContainer: [],
     status: null,
     error: null,
   },
   reducers: {
     filterByAuthors(state, action) {
-      state.newArticles = state.articles.filter(
-        (article) => article.author !== action.payload.selectedAuthor
+      state.articles = state.articlesContainer.filter((article) =>
+        article.author === null
+          ? null
+          : article.author.includes(action.payload.selectedAuthor)
+      );
+    },
+    filterByDate(state, action) {
+      state.articles = state.articlesContainer.filter(
+        (article) =>
+          new Date(article.publishedAt).toISOString() >
+          action.payload.selectDate
       );
     },
   },
@@ -33,6 +42,7 @@ const articlesSlice = createSlice({
     [fetchArticles.fulfilled]: (state, action) => {
       state.status = "resolved";
       state.articles = action.payload.articles;
+      state.articlesContainer = action.payload.articles;
     },
     [fetchArticles.rejected]: (state) => {
       state.status = "error";
@@ -40,5 +50,5 @@ const articlesSlice = createSlice({
   },
 });
 
-export const { filterByAuthors } = articlesSlice.actions;
+export const { filterByAuthors, filterByDate } = articlesSlice.actions;
 export default articlesSlice.reducer;

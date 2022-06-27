@@ -2,21 +2,9 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { useState } from "react";
 import { Typography } from "@mui/material";
-import { filterByAuthors } from "store/articlesSlice";
-import { useDispatch } from "react-redux";
 
-export default function Filter({ authors }) {
-  const [isAuthor, setIsAuthor] = useState("");
-  const dispatch = useDispatch();
-
-  const handleChange = (event) => {
-    const seletctedAuthor = event.target.value;
-    setIsAuthor(seletctedAuthor);
-    dispatch(filterByAuthors({ seletctedAuthor }));
-  };
-
+export default function Filter({ articles, isAuthor, handleChange }) {
   return (
     <FormControl sx={{ width: "-webkit-fill-available", mb: 1 }} size="large">
       <InputLabel id="demo-select-small" variant="filled" size="small">
@@ -30,11 +18,11 @@ export default function Filter({ authors }) {
         onChange={handleChange}
       >
         <MenuItem value="">
-          <em>None</em>
+          <em>Выбор автора</em>
         </MenuItem>
-        {authors.map((author, index) => (
-          <MenuItem key={index} value={author}>
-            {author}
+        {articles.map((article, index) => (
+          <MenuItem key={index} value={article.author}>
+            {article.author}
           </MenuItem>
         ))}
       </Select>
